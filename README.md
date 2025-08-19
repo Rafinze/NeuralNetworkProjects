@@ -2,7 +2,7 @@ Algoritmos desenvolvidos durante o semestre de 1-2025 na disciplina de Redes Neu
 Cada algoritmo mostra uma abordagem de um tipo de rede neural. Segue a descrição de cada projeto
 
 
-Projeto: Modelo Neural Não Supervisionado com Mapas Auto-Organizáveis (SOM)
+Projeto: Modelo Neural Não Supervisionado com Mapas Auto-Organizáveis (Projeto 2)
 Este projeto explora a aplicação de Modelos Neurais Não Supervisionados, especificamente os Mapas Auto-Organizáveis (Self-Organizing Maps - SOM), para a detecção de padrões e agrupamento de dados em diferentes conjuntos de dados. O objetivo é avaliar a capacidade do SOM em organizar tanto dados sintéticos de baixa dimensão quanto dados complexos de alta dimensão, como imagens de faces. 
 
 Datasets Utilizados
@@ -45,7 +45,8 @@ scikit-learn
 
 
 
-Projeto: Reconhecimento de Atividade Humana com Redes GRU
+Projeto: Reconhecimento de Atividade Humana com Redes GRU (Projeto 4)
+
 Este projeto implementa uma Rede Neural Recorrente (RNN), especificamente uma Gated Recurrent Unit (GRU), para a tarefa de classificação de séries temporais. O objetivo é classificar seis atividades humanas com base em dados de sensores inerciais de smartphones, utilizando o dataset UCI HAR (Human Activity Recognition Using Smartphones).
 
 Visão Geral do Projeto
@@ -102,4 +103,119 @@ tensorflow.keras
 requests
 scikit-learn
 
-Projeto Final
+Projeto: Análise de Espaço Latente com Variational Autoencoders (Projeto 3)
+Este projeto explora a implementação e o treinamento de Variational Autoencoders (VAEs) em dois datasets de imagens distintos. O objetivo principal é analisar como os VAEs aprendem a representar dados complexos em um espaço latente de baixa dimensionalidade e visualizar a organização desses dados usando seus rótulos para colorir as projeções.
+
+O projeto foi desenvolvido por Rafael Pires Moreira Silva (ID: 163978).
+
+Datasets Utilizados:
+Foram selecionados dois datasets para avaliar o desempenho e a capacidade de representação dos VAEs:
+
+
+Rock, Paper, Scissors: Um conjunto de dados com imagens de mãos realizando os três gestos do jogo (pedra, papel e tesoura). É um problema com 3 classes visualmente bem definidas. As imagens foram redimensionadas para 128x128 pixels.
+
+KMNIST (Kuzushiji-MNIST): Uma alternativa ao clássico MNIST, contendo 70.000 imagens em escala de cinza de 10 classes de caracteres do alfabeto japonês Hiragana. As imagens têm o tamanho de 28x28 pixels.
+
+Metodologia:
+Para cada dataset, um modelo VAE foi construído e treinado com o objetivo de encontrar a topologia mais eficiente. A implementação do VAE foi feita em TensorFlow/Keras e inclui:
+
+Camada de Amostragem (Sampling Layer): Uma camada customizada para gerar pontos no espaço latente a partir da média (z_mean) e da variância logarítmica (z_log_var) aprendidas pelo encoder.
+
+
+Arquitetura Encoder-Decoder: 
+Encoder: Utiliza camadas convolucionais (Conv2D) para mapear a imagem de entrada para os parâmetros do espaço latente.
+Decoder: Utiliza camadas convolucionais transpostas (Conv2DTranspose) para reconstruir a imagem original a partir de um ponto no espaço latente.
+Função de Custo (Loss Function): O treinamento é otimizado com base em uma função de custo combinada, que inclui:
+Loss de Reconstrução: Mede a diferença entre a imagem original e a reconstruída (usando binary_crossentropy).
+Loss de Kullback-Leibler (KL): Atua como um regularizador, forçando a distribuição do espaço latente a se aproximar de uma distribuição normal padrão.
+
+Treinamento:
+O VAE para o dataset Rock, Paper, Scissors foi treinado com uma dimensão latente de 16 por 30 épocas.
+O VAE para o dataset KMNIST foi treinado com uma dimensão latente de 2 por 10 épocas.
+Análise do Espaço Latente: Após o treinamento, o encoder de cada modelo foi usado para projetar as imagens de teste no espaço latente, e os resultados foram visualizados em gráficos de dispersão 2D coloridos pelos rótulos.
+Rock, Paper, Scissors
+Como o espaço latente original tinha 16 dimensões, a técnica de Análise de Componentes Principais (PCA) foi aplicada para reduzir a dimensionalidade para 2D e permitir a visualização.
+
+O gráfico resultante (página 6) mostra que o VAE conseguiu criar agrupamentos que diferenciam os gestos, embora com uma sobreposição considerável entre as classes. O gesto "paper" (ciano) concentra-se na parte superior, "scissors" (verde) se espalha da esquerda para a direita, e "rock" (roxo) tem maior dispersão, concentrando-se na parte inferior direita, mas interpondo-se com as outras classes.
+
+KMNIST
+O VAE foi treinado para mapear as imagens diretamente para um espaço latente de 2 dimensões, não necessitando de PCA.
+A projeção 2D (página 7) mostra uma clara separação e agrupamento das 10 classes de caracteres, indicando que o VAE aprendeu uma representação latente bem estruturada e significativa, onde cada cluster corresponde a uma classe de caractere Hiragana.
+
+Dependências:
+Para executar este projeto, as seguintes bibliotecas são necessárias:
+
+numpy 
+matplotlib 
+seaborn 
+tensorflow 
+tensorflow_datasets 
+scikit-learn (para PCA) 
+
+Projeto: Comparação de Arquiteturas CNN e MLP para Classificação de Imagens
+Este projeto implementa e avalia diversas topologias de Redes Neurais Convolucionais (CNNs) para a tarefa de classificação de imagens, utilizando o dataset KMNIST. Os resultados das CNNs são comparados entre si para determinar a arquitetura mais eficaz. Além disso, o melhor modelo CNN é comparado com uma rede neural Multi-Layer Perceptron (MLP) para destacar as vantagens das arquiteturas convolucionais em tarefas de visão computacional.
+
+Dataset:
+O projeto utiliza o dataset 
+
+KMNIST (Kuzushiji-MNIST), uma alternativa desafiadora ao tradicional MNIST. Ele é composto por imagens de caracteres japoneses do alfabeto Hiragana. Os dados são carregados utilizando o torchvision, normalizados e divididos em DataLoaders para treino e teste.
+
+Metodologia:
+O fluxo de trabalho consistiu em treinar e avaliar seis arquiteturas de redes neurais diferentes, sendo cinco CNNs e uma MLP. 
+
+Arquiteturas Avaliadas:
+Foram implementadas e testadas cinco topologias de CNN distintas para avaliar o impacto de diferentes parâmetros e configurações: 
+
+CNN Modelo 1: Arquitetura base com duas camadas convolucionais (16 e 32 filtros) e duas camadas totalmente conectadas. 
+
+CNN Modelo 2: Uma versão mais profunda do Modelo 1, com mais filtros (32 e 64) nas camadas convolucionais. 
+
+CNN Modelo 3: Utiliza kernels de convolução maiores (5x5) e uma camada densa com mais neurônios (256). 
+
+CNN Modelo 4: Uma arquitetura ainda mais profunda com três camadas convolucionais. 
+
+CNN Modelo 5: Modelo com alta capacidade, duas camadas convolucionais e uma camada densa maior (512 neurônios), além de uma camada de Dropout (com taxa de 0.5) para regularização. 
+
+Para comparação, um modelo MLP com três camadas totalmente conectadas (512, 256 e 10 neurônios) também foi implementado e treinado. 
+
+Treinamento e Avaliação:
+
+Treinamento: Todos os modelos foram treinados por 10 épocas utilizando o otimizador Adam e a função de perda CrossEntropyLoss. 
+
+Avaliação: O desempenho foi medido pela acurácia no conjunto de teste. 
+
+Análise: Para os dois melhores modelos CNN, a matriz de confusão foi calculada para uma análise de erro mais detalhada. O número de parâmetros treináveis de cada modelo também foi comparado. 
+
+Resultados e Análise
+Desempenho dos Modelos CNN
+As cinco arquiteturas de CNN apresentaram excelente desempenho, superando a linha de base da MLP. A acurácia final para cada modelo no conjunto de teste foi: 
+
+CNN Modelo 1: 94.54%
+CNN Modelo 2: 95.58% 
+CNN Modelo 3: 95.72% 
+CNN Modelo 4: 95.62% 
+CNN Modelo 5: 96.22% (Melhor Desempenho) 
+
+O CNN Modelo 5 se destacou, provavelmente devido à sua camada densa de maior capacidade combinada com a regularização de Dropout, que ajuda a evitar o superajuste. O CNN Modelo 2 foi o segundo melhor, com uma acurácia de 95.17%. A diferença de performance entre os melhores modelos foi mínima , e suas matrizes de confusão comprovaram a robustez, mostrando erros esparsos sem um ponto fraco evidente. 
+
+Comparação: CNN vs. MLP
+A análise comparativa entre a melhor CNN e a MLP revelou uma superioridade clara da abordagem convolucional.
+
+Modelo	Acurácia:
+Número de Parâmetros Melhor CNN (Modelo 5 - 96.22% 1.630.090 
+MLP - 90.25% - 535.818 
+
+Exportar para as Planilhas
+A CNN superou a MLP em quase 10% em acurácia, mesmo tendo um número maior de parâmetros. Isso confirma que as CNNs são inerentemente mais adequadas para tarefas de visão computacional, pois são projetadas para processar a estrutura espacial das imagens, ao contrário das MLPs, que tratam as imagens como vetores unidimensionais e perdem essa informação contextual. 
+
+Conclusão
+O estudo demonstra a superioridade das arquiteturas convolucionais para a classificação de imagens no dataset KMNIST. A escolha da topologia, como o uso de camadas de Dropout e a capacidade das camadas densas, é crucial para maximizar o desempenho. As CNNs provaram ser a ferramenta mais adequada devido à sua capacidade inata de extrair características hierárquicas e espaciais dos dados. 
+
+Dependências:
+Para executar este projeto, são necessárias as seguintes bibliotecas:
+
+torch e torchvision
+numpy
+itertools
+matplotlib
+scikit-learn
